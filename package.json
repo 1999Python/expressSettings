@@ -1,0 +1,30 @@
+{
+  "name": "settings-bill-expressjs",
+  "version": "1.0.0",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/1999Python/settings-bill-expressJS.git"
+  },
+  "author": "Raadiyah",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/1999Python/settings-bill-expressJS/issues"
+  },
+  "homepage": "https://github.com/1999Python/settings-bill-expressJS#readme",
+  "devDependencies": {
+    "mocha": "^10.2.0"
+  },
+  "description": "",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "express": "^4.18.2",
+    "express-handlebars": "^7.1.0"
+  }
+}
