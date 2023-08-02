@@ -3,8 +3,8 @@
   <head>
     <meta charset="utf-8">
     <title></title>
-    <link rel="stylesheet" href="css/skeleton.css">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="/css/skeleton.css">
+    <link rel="stylesheet" href="/css/style.css">
   </head>
   <body>
     <div class="container">
@@ -26,55 +26,57 @@
 
             <div class="six columns">
               <h5>Bill type</h5>
+              <form action="/action" method="post">
               <label class="">
-                <input type="radio" name="billItemTypeWithSettings" class="billItemTypeWithSettings">
+                <input type="radio" name="actionType" value="call" class="billItemTypeWithSettings">
                 <span class="label-body">Call</span>
               </label>
               <label class="">
-                <input type="radio" name="billItemTypeWithSettings" class="billItemTypeWithSettings">
+                <input type="radio" name="actionType" value="sms" class="billItemTypeWithSettings">
                 <span class="label-body" >SMS</span>
               </label>
-              <button class="button-primary" type="button" name="button">Add</button>
+              <button class="button-primary" type="submit" name="button">Add</button>
 
+              </form>
               <h5>Totals</h5>
                   <table>
                     <tr>
                       <td>
-                        <a href="/actions/calls">Call total</a>
+                        <a href="/actions/call">Call total</a>
                       </td>
-                      <td>R<span class="callTotalSettings">34.00</span> </td>
+                      <td>R<span class="callTotalSettings">{{totals.callTotal}} </span> </td>
                     </tr>
                     <tr>
                       <td>
                         <a href="/actions/sms">SMS total</a>
                       </td>
-                      <td>R<span class="smsTotalSettings">7.35</span> </td>
+                      <td>R<span class="smsTotalSettings">{{totals.smsTotal}} </span> </td>
                     </tr>
                     <tr>
                       <td>
                         <a href="/actions">Total</a>
                       </td>
-                      <td> R<span class="totalSettings">41.35</span> </td>
+                      <td> R<span class="totalSettings">{{totals.grandTotal}} </span> </td>
                     </tr>
                   </table>
 
             </div>
             <div class="six columns">
               <h5>Settings</h5>
-             <form action="/settings" method="post">
+             <form action="/settings" method="POST">
              
               <label for="exampleEmailInput">Call cost</label>
-              <input class="u-full-width callCostSetting" type="number" placeholder="eg. 2.55">
+              <input class="u-full-width callCostSetting" type="number" name="callCost" step=".01" placeholder="eg. 2.55" value="{{settings.callCost}}">
               <label for="exampleEmailInput">SMS cost</label>
-              <input class="u-full-width smsCostSetting" type="number" placeholder="eg. 0.65" >
+              <input class="u-full-width smsCostSetting" type="number" name="smsCost" step=".01" placeholder="eg. 0.65" value="{{settings.smsCost}}" >
               <label for="">Warning level</label>
-              <input class="u-full-width warningLevelSetting " type="number" placeholder="eg. 30.00" class="warningLevel" >
+              <input class="u-full-width warningLevelSetting" name="warningLevel" type="number" step=".01" placeholder="eg. 30.00" class="warningLevel" value="{{settings.warningLevel}}" >
               <label for="">Critical level</label>
-              <input class="u-full-width criticalLevelSetting" type="number" placeholder="eg. 65.00" >
-              <button class="button-primary updateSettings" type="submit" name="button">Update settings</button>
-
-
+              <input class="u-full-width criticalLevelSetting" name="criticalLevel" type="number" step=".01" placeholder="eg. 65.00" value="{{settings.criticalLevel}}" >
+              <button class="button-primary updateSettings"  type="submit" name="button">Update settings</button>
              </form>
+
+  
             </div>
           </div>
         </div>
