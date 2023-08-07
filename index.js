@@ -1,8 +1,12 @@
 const express = require('express');
+const moment = require('moment');
 const exphbs = require('express-handlebars');
 const bodyParser = require('body-parser');
 const SettingsBill = require('./settingsBill');
 const app = express();
+
+const now = moment(); // Get the current date and time
+console.log(now.format('YYYY-MM-DD HH:mm:ss'));
 
 const settingsBill = SettingsBill();
 app.engine('handlebars', exphbs.engine({ layoutsDir: "./views/layouts" }));
