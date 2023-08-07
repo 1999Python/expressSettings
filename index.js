@@ -39,9 +39,12 @@ app.post('/settings', function (req, res) {
 
 });
 app.post('/action', function (req, res) {
-   settingsBill.recordAction(req.body.actionType)
-        res.redirect('/');
- 
+ if (!settingsBill.hasReachedCriticalLevel()) {
+    settingsBill.recordAction(req.body.actionType);
+}
+res.redirect('/');
+
+
 });
 
 app.get('/actions', function (req, res) {
