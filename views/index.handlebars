@@ -49,19 +49,21 @@
                 <td>
                   <a href="/actions/call">Call total</a>
                 </td>
-                <td >R{{totals.callTotal}}</td>
+                <td>R{{billTotals.callTotal}}</td>
+                {{!-- <td >R{{totals.callTotal}}</td> --}}
               </tr>
               <tr>
                 <td>
                   <a href="/actions/sms">SMS total</a>
                 </td>
-                <td >R{{totals.smsTotal}}</td>
+                <td >R{{billTotals.smsTotal}}</td>
               </tr>
               <tr>
                 <td>
                   <a href="/actions">Total</a>
                 </td>
-                <td class="{{totals.grandTotalClass}}">R{{totals.grandTotal}}</td>
+                {{!-- <td class="{{totals.grandTotalClass}}">R{{totals.grandTotal}}</td> --}}
+                 <td class="{{#if hasReachedCritical}}danger{{else if hasReachedWarning}}warning{{/if}}">R{{billTotals.grandTotal}}</td>
               </tr>
             </table>
 

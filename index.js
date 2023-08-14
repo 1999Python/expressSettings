@@ -1,41 +1,47 @@
-const express = require('express');
-const moment = require('moment');
-const exphbs = require('express-handlebars');
-const bodyParser = require('body-parser');
-const SettingsBill = require('./settingsBill');
+import express from 'express';
+import exphbs from 'express-handlebars';
+import bodyParser from 'body-parser';
+import SettingsBill from './functions/settingsBill.mjs'; // .mjs extension removed
+import moment from 'moment';
+
 const app = express();
 
-const now = moment(); // Get the current date and time
-console.log(now.format('YYYY-MM-DD HH:mm:ss'));
-
 const settingsBill = SettingsBill();
+
 app.engine('handlebars', exphbs.engine({ layoutsDir: "./views/layouts" }));
+
 app.set('view engine', 'handlebars');
 app.set('views', './views');
 
 app.use(express.static("public"));
-
-// parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({
-    extended: false
-}))
+app.use(bodyParser.urlencoded({extended: 'main'}))
 // parse application/json
 app.use(bodyParser.json())
 
+
+
 app.get('/', function (req, res) {
+    const settings = settingsBill.getSettings();
+    const billTotals = settingsBill.totals();
+    const hasReachedWarning = settingsBill.hasReachedWarningLevel();
+    const hasReachedCritical = settingsBill.hasReachedCriticalLevel();
+
     res.render('index', {
-        settings: settingsBill.getSettings(),
-        totals: settingsBill.totals()
+        settings,
+        billTotals,
+        hasReachedWarning,
+        hasReachedCritical
     });
 });
+
 
 app.post('/settings', function (req, res) {
 
     settingsBill.setSettings({
-        callCost: req.body.callCost,
-        smsCost: req.body.smsCost,
-        warningLevel: req.body.warningLevel,
-        criticalLevel: req.body.criticalLevel
+        callCost: Number(req.body.callCost),
+        smsCost: Number(req.body.smsCost),
+        warningLevel: Number(req.body.warningLevel),
+        criticalLevel: Number(req.body.criticalLevel)
 
     });
     console.log(settingsBill.getSettings());
@@ -43,22 +49,40 @@ app.post('/settings', function (req, res) {
 
 });
 app.post('/action', function (req, res) {
- if (!settingsBill.hasReachedCriticalLevel()) {
-    settingsBill.recordAction(req.body.actionType);
-}
-res.redirect('/');
-
-
+    if (!settingsBill.hasReachedCriticalLevel()) {
+        settingsBill.recordAction(req.body.actionType);
+    }
+    // const itemType = req.body.billItemTypeWithSettings;
+    // settingsBill.recordAction(req.body.billItemTypeWithSettings);
+    res.redirect('/');
 });
+
+
+
+
 
 app.get('/actions', function (req, res) {
-    res.render('actions',  {actions: settingsBill.actions()});
 
-});
-app.get('/actions/:actionType', function (req, res) {
-    const actionType = req.params.actionType;
-    res.render('actions',  {actions: settingsBill.actionsFor(actionType)});
-});
+    const action = settingsBill.actions().map(item => {
+     return {
+          type: item.type,
+          cost: item.cost,
+          timestamp: moment(item.timestamp).fromNow()}
+      })
+      res.render('actions', {actions: action })
+    });
+
+
+
+
+
+    app.get('/actions/:actionType', function (req, res) {
+        const actionType = req.params.actionType;
+        res.render('actions',  {actions: settingsBill.actionsFor(actionType)});
+    });
+
+
+
 const PORT = process.env.PORT || 3011;
 
 app.listen(PORT, function () {

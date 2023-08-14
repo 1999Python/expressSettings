@@ -1,4 +1,7 @@
-module.exports = function SettingsBill() {
+import monent from "moment";
+
+export default function SettingsBill() {
+    
 
     let smsCost;
     let callCost;
@@ -36,10 +39,28 @@ module.exports = function SettingsBill() {
 
         actionList.push({
             type: action,
-            cost,
+            cost : cost,
             timestamp: new Date()
         });
     }
+
+    function callAction(action, callInput, smsInput) {
+        if (action === "call") {
+          useCall();
+          cost = callInput;
+        } else if (action === "sms") {
+          useSms();
+          cost = smsInput;
+        }
+    
+        if (cost > 0) {
+          actionList.push({
+            type: action,
+            cost: cost.toFixed(2),
+            timestamp: moment(),
+          });
+        }
+      }
 
     function actions(){
         return actionList;
@@ -77,21 +98,21 @@ module.exports = function SettingsBill() {
         return total;
     }
 
-    function grandTotal() {
-        return getTotal('sms') + getTotal('call');
+    function grandTotal() {   
+        return (Number(getTotal('sms')) + Number(getTotal('call'))).toFixed(2);
     }
 
     function totals() {
         let smsTotal = getTotal('sms');
         let callTotal = getTotal('call');
-        let grandTotal = smsTotal + callTotal;
+
     
         let grandTotalClass = grandTotal >= criticalLevel ? 'danger' : (grandTotal >= warningLevel ? 'warning' : '');
     
         return {
             smsTotal,
             callTotal,
-            grandTotal,
+            grandTotal: grandTotal(),
             grandTotalClass
         };
     }
@@ -114,9 +135,13 @@ module.exports = function SettingsBill() {
         getSettings,
         recordAction,
         actions,
+        callAction,
         actionsFor,
         totals,
         hasReachedWarningLevel,
         hasReachedCriticalLevel
     }
 }
+
+
+

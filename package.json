@@ -1,6 +1,7 @@
 {
   "name": "settings-bill-expressjs",
   "version": "1.0.0",
+  "type": "module",
   "main": "index.js",
   "directories": {
     "test": "test"
@@ -9,8 +10,8 @@
     "test": "mocha"
   },
   "repository": {
-    "type": "git",
-    "url": "git+https://github.com/1999Python/settings-bill-expressJS.git"
+    "type": "",
+    "url": ""
   },
   "author": "Raadiyah",
   "license": "ISC",
