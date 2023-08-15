@@ -1,7 +1,7 @@
 import express from 'express';
 import exphbs from 'express-handlebars';
 import bodyParser from 'body-parser';
-import SettingsBill from './functions/settingsBill.mjs'; // .mjs extension removed
+import SettingsBill from './functions/settingsBill.js'; // .mjs extension removed
 import moment from 'moment';
 
 const app = express();
@@ -17,7 +17,6 @@ app.use(express.static("public"));
 app.use(bodyParser.urlencoded({extended: 'main'}))
 // parse application/json
 app.use(bodyParser.json())
-
 
 
 app.get('/', function (req, res) {
@@ -71,10 +70,6 @@ app.get('/actions', function (req, res) {
       })
       res.render('actions', {actions: action })
     });
-
-
-
-
 
     app.get('/actions/:actionType', function (req, res) {
         const actionType = req.params.actionType;
